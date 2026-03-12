@@ -250,7 +250,7 @@ function mapJSONToModel(row, index) {
     cuotasTotales: parseFloat(row.cuotas?.total) || 0,
     cargosObj: row.cargos || {},
     cuotasObj: row.cuotas || {},
-    diasPP: row.plan_piso_dias ? parseInt(row.plan_piso_dias, 10) : 30,
+    diasPP: Number.isNaN(parseInt(row.plan_piso_dias, 10)) ? 0 : parseInt(row.plan_piso_dias, 10),
     tipoISAN: tipoISAN,
     precioBasePub: parseFloat(row.precio_base_pub) || 0,
     isanLegal: parseFloat(row.isan) || 0,
