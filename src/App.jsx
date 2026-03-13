@@ -1201,10 +1201,8 @@ export default function App() {
           <div style={{
             background: "white",
             width: "100%", /* Para adaptarse a @page letter, en vez de w-[794px] fijo */
-            minHeight: "100%", /* En vez de min-h-[1123px] fijo, permite expandir */
-            boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+            minHeight: "100vh", /* En vez de min-h-[1123px] fijo, permite expandir */
             position: "relative",
-            overflow: "hidden",
             display: "flex",
             flexDirection: "column",
             margin: "0 auto",
@@ -1220,18 +1218,18 @@ export default function App() {
               justifyContent: "center", pointerEvents: "none", zIndex: 0
             }}>
               <LogoNissan style={{
-                width: "500px", color: "#9ca3af", opacity: 0.06,
+                width: "450px", color: "#9ca3af", opacity: 0.06,
                 transform: "rotate(-12deg)"
               }} />
             </div>
 
             {/* --- CONTENIDO DEL PDF --- */}
-            <div style={{ padding: "40px", flex: 1, display: "flex", flexDirection: "column", position: "relative", zIndex: 10 }}>
+            <div style={{ padding: "20px 30px", flex: 1, display: "flex", flexDirection: "column", position: "relative", zIndex: 10 }}>
 
               {/* Encabezado Principal */}
               <header style={{
                 display: "flex", alignItems: "center", justifyContent: "space-between",
-                borderBottom: "2px solid #1f2937", paddingBottom: "16px", marginBottom: "24px"
+                borderBottom: "2px solid #1f2937", paddingBottom: "12px", marginBottom: "16px"
               }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
                   <LogoGTC />
@@ -1255,8 +1253,8 @@ export default function App() {
               {/* Información de la Cotización */}
               <section style={{
                 display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px",
-                fontSize: "14px", marginBottom: "32px", backgroundColor: "#f9fafb",
-                padding: "16px", borderRadius: "8px", border: "1px solid #f3f4f6"
+                fontSize: "13px", marginBottom: "24px", backgroundColor: "#f9fafb",
+                padding: "12px 16px", borderRadius: "8px", border: "1px solid #f3f4f6"
               }}>
                 <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
                   <p style={{ margin: 0 }}><span style={{ fontWeight: 700, color: "#111827" }}>Cliente:</span> {cliente || "Sin especificar"}</p>
@@ -1271,12 +1269,12 @@ export default function App() {
               </section>
 
               {/* Tabla de Datos */}
-              <table style={{ width: "100%", fontSize: "14px", textAlign: "left", borderCollapse: "collapse", fontVariantNumeric: "tabular-nums" }}>
+              <table style={{ width: "100%", fontSize: "13px", textAlign: "left", borderCollapse: "collapse", fontVariantNumeric: "tabular-nums" }}>
                 <thead>
                   <tr style={{ borderBottom: "2px solid #d1d5db" }}>
-                    <th style={{ padding: "8px 12px", fontWeight: 700, color: "#1f2937", width: "50%" }}>Concepto</th>
-                    <th style={{ padding: "8px 12px", fontWeight: 700, color: "#1f2937", textAlign: "right" }}>Unitario</th>
-                    <th style={{ padding: "8px 12px", fontWeight: 700, color: "#1f2937", textAlign: "right" }}>Total</th>
+                    <th style={{ padding: "6px 8px", fontWeight: 700, color: "#1f2937", width: "50%" }}>Concepto</th>
+                    <th style={{ padding: "6px 8px", fontWeight: 700, color: "#1f2937", textAlign: "right" }}>Unitario</th>
+                    <th style={{ padding: "6px 8px", fontWeight: 700, color: "#1f2937", textAlign: "right" }}>Total</th>
                   </tr>
                 </thead>
                 <tbody style={{ borderTop: "1px solid #f3f4f6" }}>
@@ -1289,15 +1287,15 @@ export default function App() {
                         fontWeight: isBold ? 600 : 400,
                         borderTop: hl ? "1px solid #fee2e2" : "1px solid #f3f4f6",
                         borderBottom: hl ? "1px solid #fee2e2" : "none",
-                        fontSize: isSub ? "12px" : "14px"
+                        fontSize: isSub ? "11px" : "12px"
                       }}>
-                        <td style={{ padding: "6px 12px", paddingLeft: isSub ? "32px" : "12px" }}>
+                        <td style={{ padding: "4px 8px", paddingLeft: isSub ? "32px" : "8px" }}>
                           {c}
                         </td>
-                        <td style={{ padding: "6px 12px", textAlign: "right" }}>
+                        <td style={{ padding: "4px 8px", textAlign: "right" }}>
                           <span style={{ color: pu.includes('(') ? "#dc2626" : "inherit" }}>{pu}</span>
                         </td>
-                        <td style={{ padding: "6px 12px", textAlign: "right" }}>
+                        <td style={{ padding: "4px 8px", textAlign: "right" }}>
                           <span style={{ color: tot.includes('(') ? "#dc2626" : "inherit" }}>{tot}</span>
                         </td>
                       </tr>
@@ -1307,7 +1305,7 @@ export default function App() {
               </table>
 
               {/* Área de Firmas */}
-              <footer style={{ marginTop: "auto", paddingTop: "64px", width: "100%" }}>
+              <footer style={{ marginTop: "auto", paddingTop: "32px", width: "100%" }}>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: "32px", textAlign: "center" }}>
                   <div>
                     <div style={{ borderBottom: "1px solid #9ca3af", margin: "0 16px 8px 16px", height: "40px" }}></div>
