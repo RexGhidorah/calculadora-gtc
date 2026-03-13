@@ -101,6 +101,22 @@ const Styles = ({ dark }) => (
   `}</style>
 );
 
+/* ── SVGs Convertidos a Componentes (Mockup) ─────────────────────────── */
+const LogoGTC = () => (
+  <svg width="48" height="48" viewBox="0 0 116 116" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g>
+      <path fill="#e10e18" d="M109.53 3.84C112.27 9.14 114.86 14.90 114.26 21.01C112.88 34.32 102.54 45.73 90.11 50.01C85.00 52.03 79.20 53.12 75.27 57.27C71.33 60.91 69.35 66.08 68.50 71.27C66.05 84.90 62.99 98.42 60.67 112.06C60.13 96.36 60.62 80.64 60.46 64.93C60.15 58.74 63.06 52.69 67.51 48.49C78.16 40.05 89.81 31.06 94.42 17.72C95.74 14.19 95.39 10.38 95.55 6.69C98.60 13.03 99.56 20.27 98.02 27.15C96.61 32.66 93.56 37.56 90.35 42.18C97.41 37.75 104.18 32.26 107.77 24.54C110.97 18.18 111.30 10.67 109.53 3.84Z" />
+      <path fill="#e10e18" d="M2.15 23.91C0.50 17.31 3.05 10.76 5.51 4.73C5.57 10.02 4.71 15.51 6.58 20.61C9.58 29.89 17.02 36.92 25.18 41.84C21.20 35.56 16.99 28.77 17.28 21.03C16.78 15.99 18.45 11.20 20.43 6.66C19.17 17.67 25.44 27.63 32.94 35.06C36.98 39.39 41.64 43.05 46.34 46.63C52.28 51.09 56.12 58.47 55.48 65.98C55.14 80.19 56.06 94.44 55.05 108.62C52.35 99.28 51.12 89.60 49.09 80.11C47.45 72.65 47.22 64.19 41.73 58.29C35.34 51.12 24.75 51.12 17.19 45.71C10.02 40.35 3.71 32.97 2.15 23.91Z" />
+    </g>
+  </svg>
+);
+
+const LogoNissan = ({ className, style }) => (
+  <svg className={className} style={style} viewBox="0 0 504 421.7" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+    <path d="m293.7 227.7c-.4.1-2 .1-2.7.1h-51.6v12h52.5c.4 0 3.5 0 4.1-.1 10.7-1 15.6-9.9 15.6-17.7 0-8-5.1-16.6-14.8-17.5-1.9-.2-3.5-.2-4.2-.2h-34.3c-1.5 0-3.2-.1-3.8-.3-2.7-.7-3.7-3.1-3.7-5.1 0-1.8 1-4.2 3.8-5 .8-.2 1.7-.3 3.6-.3h49.5v-11.8h-50.3c-2.1 0-3.7.1-5 .3-8.6 1.2-14.6 8.1-14.6 16.9 0 7.2 4.5 15.6 14.4 17 1.8.2 4.3.2 5.4.2h33.4c.6 0 2.1 0 2.4.1 3.8.5 5.1 3.3 5.1 5.8 0 2.4-1.4 5-4.8 5.6zm-97.8 0c-.4.1-2 .1-2.6.1h-51.7v12h52.5c.4 0 3.5 0 4.1-.1 10.7-1 15.6-9.9 15.6-17.7 0-8-5.1-16.6-14.8-17.5-1.9-.2-3.5-.2-4.2-.2h-34.3c-1.5 0-3.2-.1-3.8-.3-2.7-.7-3.7-3.1-3.7-5.1 0-1.8 1-4.2 3.8-5 .8-.2 1.7-.3 3.6-.3h49.5v-11.8h-50.3c-2.1 0-3.7.1-5 .3-8.6 1.2-14.6 8.1-14.6 16.9 0 7.2 4.5 15.6 14.4 17 1.8.2 4.3.2 5.4.2h33.4c.6 0 2.1 0 2.4.1 3.8.5 5.1 3.3 5.1 5.8 0 2.4-1.4 5-4.8 5.6zm-94.2-46.3h13v58.7h-13zm-85 0h-16.7v58.7h13v-44l43.6 44h16.4v-58.7h-13v43.8zm414.4 58.7h13v-44l43.5 44h16.4v-58.7h-12.9v43.8l-43.3-43.8h-16.7zm-67.7-58.7-36.6 58.7h15.8l6.5-10.5h42.7l6.5 10.5h15.7l-36.6-58.7zm21.7 37.1h-29.3l14.7-23.6zm-312.8-70.4c26.2-76.5 98.4-127.9 179.8-127.9s153.7 51.4 179.8 127.9l.2.6h57.3v-6.9l-23.8-2.8c-14.7-1.7-17.8-8.2-21.8-16.4l-1-2c-34.4-73.2-109.3-120.6-190.7-120.6-81.5 0-156.3 47.4-190.7 120.8l-1 2c-4 8.2-7.1 14.7-21.8 16.4l-23.8 2.8v6.9h57.2zm359.8 124.8-.2.6c-26.2 76.5-98.4 127.8-179.8 127.8s-153.7-51.4-179.8-127.9l-.2-.6h-57.2v6.9l23.8 2.8c14.7 1.7 17.8 8.2 21.8 16.4l1 2c34.4 73.4 109.3 120.8 190.7 120.8s156.3-47.4 190.7-120.7l1-2c4-8.2 7.1-14.7 21.8-16.4l23.8-2.8v-6.9z"/>
+  </svg>
+);
+
 /* ── ISAN ENGINE ─────────────────────────────────────────────────────── */
 const TASA_IVA = 0.16;
 const TARIFA_ISAN = [
@@ -1180,76 +1196,149 @@ export default function App() {
 
       {/* ── PLANTILLA EXCLUSIVA PARA PDF (Solo visible al imprimir) ── */}
       {r && (
-        <div className="print-only">
+        <div className="print-only" style={{ padding: 0 }}>
+          {/* Contenedor principal del PDF */}
+          <div style={{
+            background: "white",
+            width: "100%", /* Para adaptarse a @page letter, en vez de w-[794px] fijo */
+            minHeight: "100%", /* En vez de min-h-[1123px] fijo, permite expandir */
+            boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+            position: "relative",
+            overflow: "hidden",
+            display: "flex",
+            flexDirection: "column",
+            margin: "0 auto",
+            color: "#1f2937",
+            fontFamily: "sans-serif"
+          }}>
+            {/* Barra superior decorativa */}
+            <div style={{ height: "8px", width: "100%", backgroundColor: "#e10e18" }}></div>
 
-          {/* Marca de agua Nissan */}
-          <div style={{ position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)", zIndex: -1, opacity: 0.04, pointerEvents: "none" }}>
-            <svg viewBox="0 0 504 421.7" width="500" height="500" fill="#000000" xmlns="http://www.w3.org/2000/svg">
-              <path d="m293.7 227.7c-.4.1-2 .1-2.7.1h-51.6v12h52.5c.4 0 3.5 0 4.1-.1 10.7-1 15.6-9.9 15.6-17.7 0-8-5.1-16.6-14.8-17.5-1.9-.2-3.5-.2-4.2-.2h-34.3c-1.5 0-3.2-.1-3.8-.3-2.7-.7-3.7-3.1-3.7-5.1 0-1.8 1-4.2 3.8-5 .8-.2 1.7-.3 3.6-.3h49.5v-11.8h-50.3c-2.1 0-3.7.1-5 .3-8.6 1.2-14.6 8.1-14.6 16.9 0 7.2 4.5 15.6 14.4 17 1.8.2 4.3.2 5.4.2h33.4c.6 0 2.1 0 2.4.1 3.8.5 5.1 3.3 5.1 5.8 0 2.4-1.5 5-4.8 5.6zm-97.8 0c-.4.1-2 .1-2.6.1h-51.7v12h52.5c.4 0 3.5 0 4.1-.1 10.7-1 15.6-9.9 15.6-17.7 0-8-5.1-16.6-14.8-17.5-1.9-.2-3.5-.2-4.2-.2h-34.3c-1.5 0-3.2-.1-3.8-.3-2.7-.7-3.7-3.1-3.7-5.1 0-1.8 1-4.2 3.8-5 .8-.2 1.7-.3 3.6-.3h49.5v-11.8h-50.3c-2.1 0-3.7.1-5 .3-8.6 1.2-14.6 8.1-14.6 16.9 0 7.2 4.5 15.6 14.4 17 1.8.2 4.3.2 5.4.2h33.4c.6 0 2.1 0 2.4.1 3.8.5 5.1 3.3 5.1 5.8 0 2.4-1.4 5-4.8 5.6zm-94.2-46.3h13v58.7h-13zm-85 0h-16.7v58.7h13v-44l43.6 44h16.4v-58.7h-13v43.8zm414.4 58.7h13v-44l43.5 44h16.4v-58.7h-12.9v43.8l-43.3-43.8h-16.7zm-67.7-58.7-36.6 58.7h15.8l6.5-10.5h42.7l6.5 10.5h15.7l-36.6-58.7zm21.7 37.1h-29.3l14.7-23.6zm-312.8-70.4c26.2-76.5 98.4-127.9 179.8-127.9s153.7 51.4 179.8 127.9l.2.6h57.3v-6.9l-23.8-2.8c-14.7-1.7-17.8-8.2-21.8-16.4l-1-2c-34.4-73.2-109.3-120.6-190.7-120.6-81.5 0-156.3 47.4-190.7 120.8l-1 2c-4 8.2-7.1 14.7-21.8 16.4l-23.8 2.8v6.9h57.2zm359.8 124.8-.2.6c-26.2 76.5-98.4 127.8-179.8 127.8s-153.7-51.4-179.8-127.9l-.2-.6h-57.2v6.9l23.8 2.8c14.7 1.7 17.8 8.2 21.8 16.4l1 2c34.4 73.4 109.3 120.8 190.7 120.8s156.3-47.4 190.7-120.7l1-2c4-8.2 7.1-14.7 21.8-16.4l23.8-2.8v-6.9z" />
-            </svg>
+            {/* --- MARCA DE AGUA --- */}
+            <div style={{
+              position: "absolute", inset: 0, display: "flex", alignItems: "center",
+              justifyContent: "center", pointerEvents: "none", zIndex: 0
+            }}>
+              <LogoNissan style={{
+                width: "500px", color: "#9ca3af", opacity: 0.06,
+                transform: "rotate(-12deg)"
+              }} />
+            </div>
+
+            {/* --- CONTENIDO DEL PDF --- */}
+            <div style={{ padding: "40px", flex: 1, display: "flex", flexDirection: "column", position: "relative", zIndex: 10 }}>
+
+              {/* Encabezado Principal */}
+              <header style={{
+                display: "flex", alignItems: "center", justifyContent: "space-between",
+                borderBottom: "2px solid #1f2937", paddingBottom: "16px", marginBottom: "24px"
+              }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+                  <LogoGTC />
+                  <div>
+                    <h1 style={{
+                      fontSize: "24px", fontWeight: 800, letterSpacing: "-0.025em",
+                      color: "#111827", lineHeight: 1, margin: 0
+                    }}>
+                      GRUPO TORRES CORZO S.A. DE C.V.
+                    </h1>
+                    <p style={{
+                      fontSize: "14px", fontWeight: 500, color: "#4b5563",
+                      marginTop: "4px", textTransform: "uppercase", letterSpacing: "0.05em", margin: "4px 0 0 0"
+                    }}>
+                      División de Flotas · Resumen de Rentabilidad
+                    </p>
+                  </div>
+                </div>
+              </header>
+
+              {/* Información de la Cotización */}
+              <section style={{
+                display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px",
+                fontSize: "14px", marginBottom: "32px", backgroundColor: "#f9fafb",
+                padding: "16px", borderRadius: "8px", border: "1px solid #f3f4f6"
+              }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                  <p style={{ margin: 0 }}><span style={{ fontWeight: 700, color: "#111827" }}>Cliente:</span> {cliente || "Sin especificar"}</p>
+                  <p style={{ margin: 0 }}><span style={{ fontWeight: 700, color: "#111827" }}>Modelo:</span> {modeloSeleccionado}</p>
+                  <p style={{ margin: 0 }}><span style={{ fontWeight: 700, color: "#111827" }}>Número de Unidades:</span> {safeNum}</p>
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: "4px", textAlign: "right" }}>
+                  <p style={{ margin: 0 }}><span style={{ fontWeight: 700, color: "#111827" }}>Fecha de Emisión:</span> {new Date().toLocaleDateString('es-MX')}</p>
+                  <p style={{ margin: 0 }}><span style={{ fontWeight: 700, color: "#111827" }}>Plazo de Pago:</span> {safePlazo} días</p>
+                  <p style={{ margin: 0 }}><span style={{ fontWeight: 700, color: "#111827" }}>Cat. de Venta / TIIE:</span> {catV} / {pct(r.tasa)}</p>
+                </div>
+              </section>
+
+              {/* Tabla de Datos */}
+              <table style={{ width: "100%", fontSize: "14px", textAlign: "left", borderCollapse: "collapse", fontVariantNumeric: "tabular-nums" }}>
+                <thead>
+                  <tr style={{ borderBottom: "2px solid #d1d5db" }}>
+                    <th style={{ padding: "8px 12px", fontWeight: 700, color: "#1f2937", width: "50%" }}>Concepto</th>
+                    <th style={{ padding: "8px 12px", fontWeight: 700, color: "#1f2937", textAlign: "right" }}>Unitario</th>
+                    <th style={{ padding: "8px 12px", fontWeight: 700, color: "#1f2937", textAlign: "right" }}>Total</th>
+                  </tr>
+                </thead>
+                <tbody style={{ borderTop: "1px solid #f3f4f6" }}>
+                  {printTableRows.map(([c, pu, tot, hl, isSub], i) => {
+                    const isBold = hl || !isSub; // El mockup resalta grupos/totales como bold
+                    return (
+                      <tr key={i} style={{
+                        backgroundColor: hl ? "#fef2f2" : "transparent",
+                        color: hl ? "#e10e18" : (isSub ? "#6b7280" : "#111827"),
+                        fontWeight: isBold ? 600 : 400,
+                        borderTop: hl ? "1px solid #fee2e2" : "1px solid #f3f4f6",
+                        borderBottom: hl ? "1px solid #fee2e2" : "none",
+                        fontSize: isSub ? "12px" : "14px"
+                      }}>
+                        <td style={{ padding: "6px 12px", paddingLeft: isSub ? "32px" : "12px" }}>
+                          {c}
+                        </td>
+                        <td style={{ padding: "6px 12px", textAlign: "right" }}>
+                          <span style={{ color: pu.includes('(') ? "#dc2626" : "inherit" }}>{pu}</span>
+                        </td>
+                        <td style={{ padding: "6px 12px", textAlign: "right" }}>
+                          <span style={{ color: tot.includes('(') ? "#dc2626" : "inherit" }}>{tot}</span>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+
+              {/* Área de Firmas */}
+              <footer style={{ marginTop: "auto", paddingTop: "64px", width: "100%" }}>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: "32px", textAlign: "center" }}>
+                  <div>
+                    <div style={{ borderBottom: "1px solid #9ca3af", margin: "0 16px 8px 16px", height: "40px" }}></div>
+                    <p style={{ fontWeight: 700, fontSize: "14px", color: "#111827", margin: 0 }}>{comisiones[0]?.nombre || 'Asesor Comercial'}</p>
+                    <p style={{ fontSize: "12px", color: "#6b7280", margin: 0 }}>Ventas Flotillas</p>
+                  </div>
+                  <div>
+                    <div style={{ borderBottom: "1px solid #9ca3af", margin: "0 16px 8px 16px", height: "40px" }}></div>
+                    <p style={{ fontWeight: 700, fontSize: "14px", color: "#111827", margin: 0 }}>Gerente Comercial</p>
+                    <p style={{ fontSize: "12px", color: "#6b7280", margin: 0 }}>GRUPO TORRES CORZO</p>
+                  </div>
+                  <div>
+                    <div style={{ borderBottom: "1px solid #9ca3af", margin: "0 16px 8px 16px", height: "40px" }}></div>
+                    <p style={{ fontWeight: 700, fontSize: "14px", color: "#111827", margin: 0 }}>Director Comercial</p>
+                    <p style={{ fontSize: "12px", color: "#6b7280", margin: 0 }}>GRUPO TORRES CORZO</p>
+                  </div>
+                </div>
+
+                {/* Pie de página pequeño estilo impresora */}
+                <div style={{
+                  display: "flex", justifyContent: "space-between", alignItems: "center",
+                  marginTop: "48px", fontSize: "10px", color: "#9ca3af",
+                  borderTop: "1px solid #f3f4f6", paddingTop: "8px"
+                }}>
+                  <p style={{ margin: 0 }}>calculadora-gtc | localhost:5173</p>
+                  <p style={{ margin: 0 }}>Página 1 de 1</p>
+                </div>
+              </footer>
+
+            </div>
           </div>
-
-          {/* Encabezado Corporativo */}
-          <div style={{ borderBottom: "3px solid #CC0000", paddingBottom: 10, marginBottom: 16 }}>
-            <h1 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 32, color: "#CC0000", margin: 0, letterSpacing: ".02em" }}>GRUPO TORRES CORZO S.A. de C.V.</h1>
-            <p style={{ fontSize: 14, color: "#333", margin: "2px 0 0 0", fontWeight: 600 }}>División de Flotas · Resumen de Rentabilidad</p>
-          </div>
-
-          {/* Datos del Cliente y Vehículo */}
-          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 16, fontSize: 11, color: "#000", lineHeight: 1.5 }}>
-            <div>
-              <p style={{ margin: "2px 0" }}><strong>Cliente:</strong> {cliente || "Sin especificar"}</p>
-              <p style={{ margin: "2px 0" }}><strong>Modelo:</strong> {modeloSeleccionado}</p>
-              <p style={{ margin: "2px 0" }}><strong>Número de Unidades:</strong> {safeNum}</p>
-            </div>
-            <div style={{ textAlign: "right" }}>
-              <p style={{ margin: "2px 0" }}><strong>Fecha de Emisión:</strong> {new Date().toLocaleDateString('es-MX')}</p>
-              <p style={{ margin: "2px 0" }}><strong>Plazo de Pago:</strong> {safePlazo} días</p>
-              <p style={{ margin: "2px 0" }}><strong>Cat. de Venta / TIIE:</strong> {catV} / {pct(r.tasa)}</p>
-            </div>
-          </div>
-
-          {/* Tabla de Rentabilidad (Compacta y SIEMPRE desglosada) */}
-          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 11, marginBottom: 20, border: "1px solid #ddd" }}>
-            <thead>
-              <tr style={{ background: "#f0f0f0", borderBottom: "2px solid #ccc" }}>
-                <th style={{ padding: "6px 8px", textAlign: "left" }}>Concepto</th>
-                <th style={{ padding: "6px 8px", textAlign: "right" }}>Unitario</th>
-                <th style={{ padding: "6px 8px", textAlign: "right" }}>Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              {printTableRows.map(([c, pu, tot, hl, isSub], i) => (
-                <tr key={i} style={{ borderBottom: "1px solid #eee", background: hl ? "#f8f8f8" : "transparent" }}>
-                  <td style={{ padding: "4px 8px", paddingLeft: isSub ? "25px" : "8px", fontWeight: hl ? 700 : (isSub ? 400 : 600), color: isSub ? "#555" : "#000" }}>
-                    {c}
-                  </td>
-                  <td style={{ padding: "4px 8px", textAlign: "right", fontFamily: "'JetBrains Mono',monospace", fontWeight: hl ? 700 : 400 }}>{pu}</td>
-                  <td style={{ padding: "4px 8px", textAlign: "right", fontFamily: "'JetBrains Mono',monospace", fontWeight: hl ? 700 : 400 }}>{tot}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-
-          {/* Bloque de Firmas */}
-          <div style={{ display: "flex", justifyContent: "space-between", marginTop: "auto", paddingTop: 40, textAlign: "center", fontSize: 11 }}>
-            <div style={{ width: "28%" }}>
-              <div style={{ borderBottom: "1px solid #000", height: 40, marginBottom: 6 }}></div>
-              <strong style={{ fontSize: 12 }}>{comisiones[0]?.nombre || 'Asesor Comercial'}</strong><br />
-              <span style={{ color: "#555" }}>Ventas Flotillas</span>
-            </div>
-            <div style={{ width: "28%" }}>
-              <div style={{ borderBottom: "1px solid #000", height: 40, marginBottom: 6 }}></div>
-              <strong style={{ fontSize: 12 }}>Gerente Comercial</strong><br />
-              <span style={{ color: "#555" }}>GRUPO TORRES CORZO</span>
-            </div>
-            <div style={{ width: "28%" }}>
-              <div style={{ borderBottom: "1px solid #000", height: 40, marginBottom: 6 }}></div>
-              <strong style={{ fontSize: 12 }}>Director Comercial</strong><br />
-              <span style={{ color: "#555" }}>GRUPO TORRES CORZO</span>
-            </div>
-          </div>
-
         </div>
       )}
     </>
