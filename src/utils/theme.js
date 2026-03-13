@@ -1,0 +1,16 @@
+export const T = {
+  pageBg: d => d ? "#0f1117" : "#f1f2f5",
+  headerBg: d => d ? "#16181f" : "#ffffff",
+  cardBg: d => d ? "#1c1f28" : "#ffffff",
+  inputBg: d => d ? "#23262f" : "#f8f9fb",
+  rowAlt: d => d ? "#1f2230" : "#f8f9fb",
+  border: d => d ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.09)",
+  border2: d => d ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.14)",
+  t0: d => d ? "#f0f1f5" : "#0f1117",
+  t1: d => d ? "#8b8fa8" : "#555872",
+  t2: d => d ? "#555872" : "#8b8fa8",
+  t3: d => d ? "#2e3044" : "#d0d2dc",
+  green: d => d ? "#1fd8a4" : "#0a8f6e",
+  amber: d => d ? "#f59e0b" : "#c47800",
+  danger: d => d ? "#ef4444" : "#cc1c1c",
+};
