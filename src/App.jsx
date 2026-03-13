@@ -258,7 +258,7 @@ function mapJSONToModel(row, index) {
 }
 
 /* ── MOTOR FINANCIERO ────────────────────────────────────────────────── */
-function calcular({ m, num, plazo, bc, precio, categoriaSeleccionada, isanOvr, totalComisiones = 0, tiie = TIIE_DEFAULT, adic = ADIC_DEFAULT }) {
+function calcular({ m, num, plazo, bc, precio, categoriaSeleccionada, isanOvr, totalComisiones = 0, totalGastosOpExt = 0, tiie = TIIE_DEFAULT, adic = ADIC_DEFAULT }) {
   const tasa = tiie + adic;
   const baseParaDescuento = m.especial > 0 ? m.especial : m.lista;
   const desc = baseParaDescuento > 0 ? (baseParaDescuento - precio) / baseParaDescuento : 0;
@@ -281,12 +281,12 @@ function calcular({ m, num, plazo, bc, precio, categoriaSeleccionada, isanOvr, t
   const ec = bc ? 0 : m.dist * 0.025;
 
   const uopU_bruta = uB - isanCalc - pp - ec;
-  const uopU = uopU_bruta - totalComisiones;
+  const uopU = uopU_bruta - totalComisiones - totalGastosOpExt;
   const iva = pSIVA * 0.16;
 
   return {
     pSIVA, bonif, uB, cargos, cuotas, pp, ec, isan: isanCalc, isanInfo,
-    totalComisiones, uopU_bruta, iva,
+    totalComisiones, totalGastosOpExt, uopU_bruta, iva,
     uopU, uopT: uopU * num,
     mg: pSIVA > 0 ? uopU / pSIVA : 0,
     desc, categoria, diasF, basePP,
@@ -395,10 +395,14 @@ export default function App() {
   const [isanOvr, setIsanOvr] = useState("");
 
   const [expandCargos, setExpandCargos] = useState(false);
+  const [expandGastosOpExt, setExpandGastosOpExt] = useState(false);
   const [expandCuotas, setExpandCuotas] = useState(false);
 
   const [comisiones, setComisiones] = useState([
     { id: 1, nombre: "Vendedor", valor: "", modo: "pct" },
+  ]);
+  const [gastosOpExt, setGastosOpExt] = useState([
+    { id: 1, nombre: "Traslado", valor: "" },
   ]);
   const nextId = () => Date.now();
 
@@ -446,7 +450,7 @@ export default function App() {
   // Los cálculos se ejecutan usando "precioNegociado"
   const rBase = useMemo(() => {
     if (!m || !pF) return null;
-    return calcular({ m, num: safeNum, plazo: safePlazo, bc, precio: precioNegociado, categoriaSeleccionada, isanOvr: iOvr, totalComisiones: 0, tiie, adic });
+    return calcular({ m, num: safeNum, plazo: safePlazo, bc, precio: precioNegociado, categoriaSeleccionada, isanOvr: iOvr, totalComisiones: 0, totalGastosOpExt: 0, tiie, adic });
   }, [m, safeNum, safePlazo, bc, pF, precioNegociado, categoriaSeleccionada, iOvr, tiie, adic]);
 
   const totalComisiones = useMemo(() => {
@@ -459,10 +463,18 @@ export default function App() {
     }, 0);
   }, [rBase, comisiones]);
 
+  const totalGastosOpExt = useMemo(() => {
+    return gastosOpExt.reduce((acc, g) => {
+      const v = parseFloat(g.valor) || 0;
+      if (Number.isNaN(v)) return acc;
+      return acc + v;
+    }, 0);
+  }, [gastosOpExt]);
+
   const r = useMemo(() => {
     if (!m || !pF) return null;
-    return calcular({ m, num: safeNum, plazo: safePlazo, bc, precio: precioNegociado, categoriaSeleccionada, isanOvr: iOvr, totalComisiones, tiie, adic });
-  }, [m, safeNum, safePlazo, bc, pF, precioNegociado, categoriaSeleccionada, iOvr, totalComisiones, tiie, adic]);
+    return calcular({ m, num: safeNum, plazo: safePlazo, bc, precio: precioNegociado, categoriaSeleccionada, isanOvr: iOvr, totalComisiones, totalGastosOpExt, tiie, adic });
+  }, [m, safeNum, safePlazo, bc, pF, precioNegociado, categoriaSeleccionada, iOvr, totalComisiones, totalGastosOpExt, tiie, adic]);
 
   const catV = r ? r.categoria : "—";
   const ac = r ? (r.mg < 0 ? T.danger(dark) : r.mg <= 0.015 ? T.amber(dark) : T.t0(dark)) : T.t0(dark);
@@ -486,6 +498,22 @@ export default function App() {
       if (m.cargosObj.prima_asist) webTableRows.push(["↳ Prima Asistencia", `(${mxn(m.cargosObj.prima_asist)})`, `(${mxn(m.cargosObj.prima_asist * safeNum)})`, false, false, false, null, true]);
       if (m.cargosObj.cuota_tras) webTableRows.push(["↳ Cuota Traslado", `(${mxn(m.cargosObj.cuota_tras)})`, `(${mxn(m.cargosObj.cuota_tras * safeNum)})`, false, false, false, null, true]);
       if (m.cargosObj.seg_tras) webTableRows.push(["↳ Seguro Traslado", `(${mxn(m.cargosObj.seg_tras)})`, `(${mxn(m.cargosObj.seg_tras * safeNum)})`, false, false, false, null, true]);
+    }
+
+    if (r.totalGastosOpExt > 0) {
+      webTableRows.push([
+        "Gastos Operativos Ext.", `(${mxn(r.totalGastosOpExt)})`, `(${mxn(r.totalGastosOpExt * safeNum)})`,
+        false, true, expandGastosOpExt, () => setExpandGastosOpExt(!expandGastosOpExt), false
+      ]);
+
+      if (expandGastosOpExt) {
+        gastosOpExt.forEach(g => {
+          const v = parseFloat(g.valor) || 0;
+          if (v > 0) {
+            webTableRows.push([`↳ ${g.nombre || "Sin nombre"}`, `(${mxn(v)})`, `(${mxn(v * safeNum)})`, false, false, false, null, true]);
+          }
+        });
+      }
     }
 
     webTableRows.push([
@@ -529,6 +557,16 @@ export default function App() {
       if (m.cargosObj.prima_asist) printTableRows.push(["↳ Prima Asistencia", `(${mxn(m.cargosObj.prima_asist)})`, `(${mxn(m.cargosObj.prima_asist * safeNum)})`, false, true]);
       if (m.cargosObj.cuota_tras) printTableRows.push(["↳ Cuota Traslado", `(${mxn(m.cargosObj.cuota_tras)})`, `(${mxn(m.cargosObj.cuota_tras * safeNum)})`, false, true]);
       if (m.cargosObj.seg_tras) printTableRows.push(["↳ Seguro Traslado", `(${mxn(m.cargosObj.seg_tras)})`, `(${mxn(m.cargosObj.seg_tras * safeNum)})`, false, true]);
+    }
+
+    if (r.totalGastosOpExt > 0) {
+      printTableRows.push(["Gastos Operativos Ext.", `(${mxn(r.totalGastosOpExt)})`, `(${mxn(r.totalGastosOpExt * safeNum)})`, false, false]);
+      gastosOpExt.forEach(g => {
+        const v = parseFloat(g.valor) || 0;
+        if (v > 0) {
+          printTableRows.push([`↳ ${g.nombre || "Sin nombre"}`, `(${mxn(v)})`, `(${mxn(v * safeNum)})`, false, true]);
+        }
+      });
     }
 
     printTableRows.push(["Cuotas", `(${mxn(r.cuotas)})`, `(${mxn(r.cuotas * safeNum)})`, false, false]);
@@ -782,6 +820,52 @@ export default function App() {
 
                   <div style={{ marginBottom: 20, padding: "16px", background: T.inputBg(dark), border: `1px solid ${T.border(dark)}`, borderRadius: 12 }}>
                     <div style={{ ...flex, justifyContent: "space-between", alignItems: "center", marginBottom: 12, flexWrap: "wrap", gap: 10 }}>
+                      <p style={{ fontSize: 11, fontWeight: 700, color: T.t1(dark), textTransform: "uppercase", letterSpacing: ".08em" }}>Gastos Operativos Ext.</p>
+                      <div style={{ ...flex, alignItems: "center", gap: 8 }}>
+                        {totalGastosOpExt > 0 && r && (
+                          <span className="hide-on-mobile" style={{ fontSize: 11, fontFamily: "'JetBrains Mono',monospace", fontWeight: 600, color: T.danger(dark) }}>
+                            Total: ({mxn(totalGastosOpExt)})
+                          </span>
+                        )}
+                        <button onClick={() => setGastosOpExt(gs => [...gs, { id: nextId(), nombre: "", valor: "" }])}
+                          style={{ padding: "4px 10px", borderRadius: 6, border: `1px solid ${T.border2(dark)}`, background: "transparent", color: T.t1(dark), fontSize: 12, cursor: "pointer", fontWeight: 600 }}>
+                          + Agregar
+                        </button>
+                      </div>
+                    </div>
+                    {gastosOpExt.length === 0 && (
+                      <p style={{ fontSize: 12, color: T.t2(dark), textAlign: "center", padding: "8px 0" }}>Sin gastos operativos extra</p>
+                    )}
+                    <div style={{ ...flex, ...col, gap: 12 }}>
+                      {gastosOpExt.map((g) => {
+                        const valNum = parseFloat(g.valor) || 0;
+                        return (
+                          <div key={g.id} className="commission-row">
+                            <input placeholder="Concepto (ej. Traslado)" value={g.nombre}
+                              onChange={e => setGastosOpExt(gs => gs.map(x => x.id === g.id ? { ...x, nombre: e.target.value } : x))}
+                              style={{ flex: 2, minWidth: 120, padding: "7px 10px", borderRadius: 7, background: T.cardBg(dark), border: `1px solid ${T.border2(dark)}`, color: T.t0(dark), fontSize: 12 }} />
+
+                            <div style={{ flex: 1, minWidth: 90, position: "relative" }}>
+                              <input type="number" min={0} placeholder="0" value={g.valor}
+                                onChange={e => setGastosOpExt(gs => gs.map(x => x.id === g.id ? { ...x, valor: e.target.value } : x))}
+                                style={{ width: "100%", padding: "7px 28px 7px 10px", borderRadius: 7, background: T.cardBg(dark), border: `1px solid ${T.border2(dark)}`, color: T.t0(dark), fontSize: 12, fontFamily: "'JetBrains Mono',monospace" }} />
+                              <span style={{ position: "absolute", right: 8, top: "50%", transform: "translateY(-50%)", fontSize: 11, color: T.t2(dark), pointerEvents: "none" }}>
+                                $
+                              </span>
+                            </div>
+
+                            <button onClick={() => setGastosOpExt(gs => gs.filter(x => x.id !== g.id))}
+                              style={{ width: 28, height: 28, borderRadius: 6, border: `1px solid ${T.border(dark)}`, background: "transparent", color: T.t2(dark), fontSize: 16, cursor: "pointer", flexShrink: 0, lineHeight: 1 }}>
+                              ×
+                            </button>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div style={{ marginBottom: 20, padding: "16px", background: T.inputBg(dark), border: `1px solid ${T.border(dark)}`, borderRadius: 12 }}>
+                    <div style={{ ...flex, justifyContent: "space-between", alignItems: "center", marginBottom: 12, flexWrap: "wrap", gap: 10 }}>
                       <p style={{ fontSize: 11, fontWeight: 700, color: T.t1(dark), textTransform: "uppercase", letterSpacing: ".08em" }}>Comisiones</p>
                       <div style={{ ...flex, alignItems: "center", gap: 8 }}>
                         {totalComisiones > 0 && r && (
@@ -859,6 +943,7 @@ export default function App() {
                           ["ISAN", `(${mxn(r.isan)})`],
                           ["Evaluación Corporativa", r.ec === 0 ? "— (BC activo)" : `(${mxn(r.ec)})`],
                           ...(r.totalComisiones > 0 ? [["Comisiones", `(${mxn(r.totalComisiones)})`]] : []),
+                          ...(r.totalGastosOpExt > 0 ? [["Gastos Operativos Ext.", `(${mxn(r.totalGastosOpExt)})`]] : []),
                         ].map(([label, val]) => (
                           <div key={label} style={{ ...flex, justifyContent: "space-between", padding: "9px 0", borderBottom: `1px solid ${T.border(dark)}` }}>
                             <span style={{ fontSize: 13, color: T.t1(dark) }}>{label}</span>
