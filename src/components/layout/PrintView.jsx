@@ -69,8 +69,8 @@ export function PrintView({ r, m, safeNum, cliente, modeloSeleccionado, safePlaz
             <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
               <LogoGTC />
               <div>
-                <h1 style={{ fontSize: "24px", fontWeight: 800, letterSpacing: "-0.025em", color: "#111827", lineHeight: 1, margin: 0 }}>GRUPO TORRES CORZO S.A. DE C.V.</h1>
-                <p style={{ fontSize: "14px", fontWeight: 500, color: "#4b5563", marginTop: "4px", textTransform: "uppercase", letterSpacing: "0.05em", margin: "4px 0 0 0" }}>División de Flotas · Resumen de Rentabilidad</p>
+                <h1 style={{ fontSize: "24px", fontWeight: 800, letterSpacing: "-0.025em", color: "#111827", lineHeight: 1, margin: 0 }}>GRUPO TORRES CORZO</h1>
+                <p style={{ fontSize: "14px", fontWeight: 500, color: "#4b5563", marginTop: "4px", textTransform: "uppercase", letterSpacing: "0.05em", margin: "4px 0 0 0" }}>Resumen de Rentabilidad</p>
               </div>
             </div>
           </header>
@@ -115,17 +115,14 @@ export function PrintView({ r, m, safeNum, cliente, modeloSeleccionado, safePlaz
               <div>
                 <div style={{ borderBottom: "1px solid #9ca3af", margin: "0 16px 8px 16px", height: "40px" }}></div>
                 <p style={{ fontWeight: 700, fontSize: "14px", color: "#111827", margin: 0 }}>{comisiones[0]?.nombre || 'Asesor Comercial'}</p>
-                <p style={{ fontSize: "12px", color: "#6b7280", margin: 0 }}>Ventas Flotillas</p>
               </div>
               <div>
                 <div style={{ borderBottom: "1px solid #9ca3af", margin: "0 16px 8px 16px", height: "40px" }}></div>
                 <p style={{ fontWeight: 700, fontSize: "14px", color: "#111827", margin: 0 }}>Gerente Comercial</p>
-                <p style={{ fontSize: "12px", color: "#6b7280", margin: 0 }}>GRUPO TORRES CORZO</p>
               </div>
               <div>
                 <div style={{ borderBottom: "1px solid #9ca3af", margin: "0 16px 8px 16px", height: "40px" }}></div>
                 <p style={{ fontWeight: 700, fontSize: "14px", color: "#111827", margin: 0 }}>Director Comercial</p>
-                <p style={{ fontSize: "12px", color: "#6b7280", margin: 0 }}>GRUPO TORRES CORZO</p>
               </div>
             </div>
 
