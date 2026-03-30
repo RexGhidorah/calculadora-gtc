@@ -82,6 +82,8 @@ export function useCalculator() {
   const gastosOpExtBloqueados = m ? !familiaModelo : false;
 
   const { totalGastosOpExtAgencia, costoClienteExtra } = useMemo(() => {
+    if (gastosOpExtBloqueados) return { totalGastosOpExtAgencia: 0, costoClienteExtra: 0 };
+
     return gastosOpExt.reduce((acc, g) => {
       const v = parseFloat(g.valor) || 0;
       if (Number.isNaN(v)) return acc;
@@ -90,14 +92,16 @@ export function useCalculator() {
       const pctValido = Math.max(0, Math.min(100, pctCliente));
 
       const absorbeCliente = v * (pctValido / 100);
-      const absorbeAgencia = v - absorbeCliente;
 
+      // The full expense always applies to the agency's profitability calculation.
+      // If the client absorbs a percentage, that amount is added to the vehicle price (revenue),
+      // neutralizing the expense impact on the bottom line.
       return {
-        totalGastosOpExtAgencia: acc.totalGastosOpExtAgencia + absorbeAgencia,
+        totalGastosOpExtAgencia: acc.totalGastosOpExtAgencia + v,
         costoClienteExtra: acc.costoClienteExtra + absorbeCliente
       };
     }, { totalGastosOpExtAgencia: 0, costoClienteExtra: 0 });
-  }, [gastosOpExt]);
+  }, [gastosOpExt, gastosOpExtBloqueados]);
 
   const rBase = useMemo(() => {
     if (!m || !pF) return null;

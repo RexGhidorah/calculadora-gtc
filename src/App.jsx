@@ -54,7 +54,8 @@ export default function App() {
         gastosOpExt.forEach(g => {
           const v = parseFloat(g.valor) || 0;
           if (v > 0) {
-            webTableRows.push([`↳ ${g.nombre || "Sin nombre"}`, `(${mxn(v)})`, `(${mxn(v * safeNum)})`, false, false, false, null, true]);
+            const pctLabel = g.porcentajeCliente > 0 ? ` (C: ${g.porcentajeCliente}%)` : "";
+            webTableRows.push([`↳ ${g.nombre || "Sin nombre"}${pctLabel}`, `(${mxn(v)})`, `(${mxn(v * safeNum)})`, false, false, false, null, true]);
           }
         });
       }
@@ -136,6 +137,7 @@ export default function App() {
                     setCategoriaSeleccionada("MENUDEO");
                     setIsanOvr("");
                     setPrecioNegociadoInput("");
+                    setGastosOpExt([]);
                   }}
                     style={{ width: "100%", padding: "10px 12px", borderRadius: 8, backgroundColor: T.inputBg(dark), border: `1.5px solid ${T.border2(dark)}`, color: T.t0(dark), fontSize: 13, cursor: loadingDb ? "wait" : "pointer", appearance: "none", opacity: loadingDb ? 0.6 : 1, backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%23888' stroke-width='1.5' fill='none'/%3E%3C/svg%3E")`, backgroundRepeat: "no-repeat", backgroundPosition: "right 12px center" }}>
                     <option value="">{loadingDb ? "Cargando catálogo..." : "— Seleccionar modelo —"}</option>

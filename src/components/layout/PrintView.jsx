@@ -30,10 +30,9 @@ export function PrintView({ r, m, safeNum, cliente, modeloSeleccionado, safePlaz
       gastosOpExt.forEach(g => {
         const v = parseFloat(g.valor) || 0;
         const pctCliente = Math.max(0, Math.min(100, parseFloat(g.porcentajeCliente) || 0));
-        const absorbeAgencia = v * (1 - pctCliente / 100);
         if (v > 0) {
           const labelAdicional = pctCliente > 0 ? ` (C: ${pctCliente}%)` : '';
-          rows.push([`↳ ${g.nombre || "Sin nombre"}${labelAdicional}`, `(${mxn(absorbeAgencia)})`, `(${mxn(absorbeAgencia * safeNum)})`, false, true]);
+          rows.push([`↳ ${g.nombre || "Sin nombre"}${labelAdicional}`, `(${mxn(v)})`, `(${mxn(v * safeNum)})`, false, true]);
         }
       });
     }
