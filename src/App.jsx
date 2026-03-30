@@ -245,7 +245,7 @@ export default function App() {
                                 ))}
                               </select>
                               <div style={{ flex: 1, minWidth: 90, position: "relative" }}>
-                                <input type="number" min={0} placeholder="0" value={g.valor} onChange={e => setGastosOpExt(gs => gs.map(x => x.id === g.id ? { ...x, valor: e.target.value } : x))} style={{ width: "100%", padding: "7px 28px 7px 10px", borderRadius: 7, background: T.cardBg(dark), border: `1px solid ${T.border2(dark)}`, color: T.t0(dark), fontSize: 12, fontFamily: "'JetBrains Mono',monospace" }} />
+                                <input type="number" readOnly placeholder="0" value={g.valor} style={{ width: "100%", padding: "7px 28px 7px 10px", borderRadius: 7, background: T.cardBg(dark), border: `1px solid ${T.border2(dark)}`, color: T.t0(dark), fontSize: 12, fontFamily: "'JetBrains Mono',monospace", cursor: "not-allowed", opacity: 0.8 }} />
                                 <span style={{ position: "absolute", right: 8, top: "50%", transform: "translateY(-50%)", fontSize: 11, color: T.t2(dark), pointerEvents: "none" }}>$</span>
                               </div>
                               <button onClick={() => setGastosOpExt(gs => gs.filter(x => x.id !== g.id))} style={{ width: 28, height: 28, borderRadius: 6, border: `1px solid ${T.border(dark)}`, background: "transparent", color: T.t2(dark), fontSize: 16, cursor: "pointer", flexShrink: 0, lineHeight: 1 }}>×</button>
