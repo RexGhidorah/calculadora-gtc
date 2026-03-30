@@ -20,7 +20,13 @@ export function obtenerTiieHaceUnMes(historicoTiie) {
 
 export function mapJSONToModel(row, index) {
   const lista = parseFloat(row.total_lista) || 0;
-  const bonoMes = parseFloat(row.bono_mes) || 0;
+
+  const b = row.bonificaciones || {};
+  const bonoMes = parseFloat(b.bono_mes) || parseFloat(row.bono_mes) || 0;
+  const bonifNmex = parseFloat(b.bonif_nmex) || 0;
+  const incA = parseFloat(b.incentivo_a) || parseFloat(row.incentivo_a) || 0;
+  const incAA = parseFloat(b.incentivo_aa) || parseFloat(row.incentivo_aa) || 0;
+
   const especial = bonoMes > 0 ? lista - bonoMes : 0;
 
   let tipoISAN = "auto";
@@ -38,12 +44,13 @@ export function mapJSONToModel(row, index) {
     lista: lista,
     especial: especial,
     bonoMes: bonoMes,
+    bonifNmex: bonifNmex,
     flotA: parseFloat(row.precio_a) || 0,
     flotAA: parseFloat(row.precio_aa) || 0,
     flotAAA: parseFloat(row.precio_aaa) || 0,
     dist: parseFloat(row.precio_base_dist) || 0,
-    incA: parseFloat(row.incentivo_a) || 0,
-    incAA: parseFloat(row.incentivo_aa) || 0,
+    incA: incA,
+    incAA: incAA,
     cargosTotales: parseFloat(row.cargos?.total) || 0,
     cuotasTotales: parseFloat(row.cuotas?.total) || 0,
     cargosObj: row.cargos || {},

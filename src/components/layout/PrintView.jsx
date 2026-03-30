@@ -48,6 +48,9 @@ export function PrintView({ r, m, safeNum, cliente, modeloSeleccionado, safePlaz
     }
 
     rows.push(["Incentivo NMEX", mxn(r.bonif.total), mxn(r.bonif.total * safeNum), false, false]);
+    if (r.bonifNmex > 0) {
+      rows.push(["Bonificación NMEX", mxn(r.bonifNmex), mxn(r.bonifNmex * safeNum), false, false]);
+    }
     rows.push(["Utilidad Bruta", mxn(r.uB), mxn(r.uB * safeNum), false, false]);
     rows.push(["ISAN", `(${mxn(r.isan)})`, `(${mxn(r.isan * safeNum)})`, false, false]);
     rows.push(["Plan Piso", `(${mxn(r.pp)})`, `(${mxn(r.pp * safeNum)})`, false, false]);

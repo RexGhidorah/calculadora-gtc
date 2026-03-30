@@ -105,7 +105,9 @@ export function calcular({ m, num, plazo, bc, precio, categoriaSeleccionada, isa
   const isanCalc = isanOvr !== undefined ? isanOvr : isanInfoCompleto.isanPagable;
   const isanInfo = isanInfoCompleto;
 
-  const uB = pSIVA + bonif.total - m.dist - cargos - cuotas;
+  const bonifNmex = m.bonifNmex || 0;
+
+  const uB = pSIVA + bonif.total + bonifNmex - m.dist - cargos - cuotas;
   const diasF = Math.max(0, plazo - m.diasPP);
   const basePP = m.dist + cargos + cuotas + (m.dist + cargos) * 0.16;
   const pp = (basePP * tasa / 360) * diasF;
@@ -116,7 +118,7 @@ export function calcular({ m, num, plazo, bc, precio, categoriaSeleccionada, isa
   const iva = pSIVA * 0.16;
 
   return {
-    pSIVA, precioAjustado, costoClienteExtra, bonif, uB, cargos, cuotas, pp, ec, isan: isanCalc, isanInfo,
+    pSIVA, precioAjustado, costoClienteExtra, bonif, bonifNmex, uB, cargos, cuotas, pp, ec, isan: isanCalc, isanInfo,
     totalComisiones, totalGastosOpExt, uopU_bruta, iva,
     uopU, uopT: uopU * num,
     mg: pSIVA > 0 ? uopU / pSIVA : 0,

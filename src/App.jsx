@@ -74,6 +74,9 @@ export default function App() {
     }
 
     webTableRows.push(["Incentivo NMEX", mxn(r.bonif.total), mxn(r.bonif.total * safeNum)]);
+    if (r.bonifNmex > 0) {
+      webTableRows.push(["Bonificación NMEX", mxn(r.bonifNmex), mxn(r.bonifNmex * safeNum)]);
+    }
     webTableRows.push(["Utilidad Bruta", mxn(r.uB), mxn(r.uB * safeNum)]);
     webTableRows.push(["ISAN", `(${mxn(r.isan)})`, `(${mxn(r.isan * safeNum)})`]);
     webTableRows.push(["Plan Piso", `(${mxn(r.pp)})`, `(${mxn(r.pp * safeNum)})`]);
@@ -308,6 +311,8 @@ export default function App() {
                           ["Precio Final c/IVA", mxn(r.pSIVA * 1.16)],
                           ["IVA (16%)", mxn(r.iva)],
                           ["Precio s/IVA", mxn(r.pSIVA)],
+                          ["Incentivo NMEX", mxn(r.bonif.total)],
+                          ...(r.bonifNmex > 0 ? [["Bonificación NMEX", mxn(r.bonifNmex)]] : []),
                           ["Utilidad Bruta", mxn(r.uB)],
                           ["ISAN", `(${mxn(r.isan)})`],
                           ["Evaluación Corporativa", r.ec === 0 ? "— (BC activo)" : `(${mxn(r.ec)})`],
