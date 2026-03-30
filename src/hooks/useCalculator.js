@@ -3,6 +3,7 @@ import dbJson from "../data/Nissan_Lista_Precios_Calculadora_Distribuidor_Nissan
 import tiieData from "../data/tiie.json";
 import { mapJSONToModel, obtenerTiieHaceUnMes } from "../core/mappings";
 import { calcular, TIIE_DEFAULT, ADIC_DEFAULT } from "../core/calculations";
+import { getFamiliaModelo, GASTOS_OPERATIVOS_FLOTAS } from "../data/gastosOperativos";
 
 export function useCalculator() {
   const [dark, setDark] = useState(false);
@@ -33,7 +34,7 @@ export function useCalculator() {
     { id: 1, nombre: "Vendedor", valor: "", modo: "pct" },
   ]);
   const [gastosOpExt, setGastosOpExt] = useState([
-    { id: 1, nombre: "Traslado", valor: "" },
+    { id: 1, nombre: "", valor: "" },
   ]);
 
   const nextId = () => Date.now();
@@ -76,6 +77,9 @@ export function useCalculator() {
   const adic = adicInput !== "" ? parseFloat(adicInput) / 100 : ADIC_DEFAULT;
   const safeNum = num === "" ? 0 : parseInt(num, 10) || 0;
   const safePlazo = plazo === "" ? 0 : parseInt(plazo, 10) || 0;
+
+  const familiaModelo = getFamiliaModelo(modeloSeleccionado);
+  const gastosOpExtBloqueados = m ? !familiaModelo : false;
 
   const rBase = useMemo(() => {
     if (!m || !pF) return null;
@@ -121,7 +125,7 @@ export function useCalculator() {
     },
     computed: {
       m, pF, esAAA, precioNegociado, descuentoAdicional, safeNum, safePlazo,
-      totalComisiones, totalGastosOpExt, r, descFijo
+      totalComisiones, totalGastosOpExt, r, descFijo, familiaModelo, gastosOpExtBloqueados
     }
   };
 }

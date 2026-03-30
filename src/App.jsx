@@ -9,13 +9,14 @@ import { MargenBadge } from "./components/ui/MargenBadge";
 import { T } from "./utils/theme";
 import { mxn, pct } from "./utils/formatters";
 import { TIIE_DEFAULT, ADIC_DEFAULT } from "./core/calculations";
+import { GASTOS_OPERATIVOS_FLOTAS } from "./data/gastosOperativos";
 
 export default function App() {
   const calc = useCalculator();
   const { state, actions, computed } = calc;
   const { dark, loadingDb, modelosData, vigenciaDB, cliente, num, plazo, bc, tiieInput, fechaTiieAplicada, adicInput, modeloSeleccionado, categoriaSeleccionada, precioNegociadoInput, isanOvr, expandCargos, expandGastosOpExt, expandCuotas, comisiones, gastosOpExt } = state;
   const { setDark, setCliente, setNum, setPlazo, setBC, setTiieInput, setAdicInput, setModeloSeleccionado, setCategoriaSeleccionada, setPrecioNegociadoInput, setIsanOvr, setExpandCargos, setExpandGastosOpExt, setExpandCuotas, setComisiones, setGastosOpExt, nextId } = actions;
-  const { m, pF, esAAA, precioNegociado, descuentoAdicional, safeNum, safePlazo, totalComisiones, totalGastosOpExt, r, descFijo } = computed;
+  const { m, pF, esAAA, precioNegociado, descuentoAdicional, safeNum, safePlazo, totalComisiones, totalGastosOpExt, r, descFijo, familiaModelo, gastosOpExtBloqueados } = computed;
 
   const catV = r ? r.categoria : "—";
   const ac = r ? (r.mg < 0 ? T.danger(dark) : r.mg <= 0.015 ? T.amber(dark) : T.t0(dark)) : T.t0(dark);
@@ -212,27 +213,47 @@ export default function App() {
                     </div>
                   )}
 
-                  <div style={{ marginBottom: 20, padding: "16px", background: T.inputBg(dark), border: `1px solid ${T.border(dark)}`, borderRadius: 12 }}>
+                  <div style={{ marginBottom: 20, padding: "16px", background: T.inputBg(dark), border: `1px solid ${T.border(dark)}`, borderRadius: 12, opacity: gastosOpExtBloqueados ? 0.6 : 1, pointerEvents: gastosOpExtBloqueados ? "none" : "auto" }}>
                     <div style={{ ...flex, justifyContent: "space-between", alignItems: "center", marginBottom: 12, flexWrap: "wrap", gap: 10 }}>
                       <p style={{ fontSize: 11, fontWeight: 700, color: T.t1(dark), textTransform: "uppercase", letterSpacing: ".08em" }}>Gastos Operativos Ext.</p>
                       <div style={{ ...flex, alignItems: "center", gap: 8 }}>
-                        {totalGastosOpExt > 0 && r && <span className="hide-on-mobile" style={{ fontSize: 11, fontFamily: "'JetBrains Mono',monospace", fontWeight: 600, color: T.danger(dark) }}>Total: ({mxn(totalGastosOpExt)})</span>}
-                        <button onClick={() => setGastosOpExt(gs => [...gs, { id: nextId(), nombre: "", valor: "" }])} style={{ padding: "4px 10px", borderRadius: 6, border: `1px solid ${T.border2(dark)}`, background: "transparent", color: T.t1(dark), fontSize: 12, cursor: "pointer", fontWeight: 600 }}>+ Agregar</button>
+                        {totalGastosOpExt > 0 && !gastosOpExtBloqueados && r && <span className="hide-on-mobile" style={{ fontSize: 11, fontFamily: "'JetBrains Mono',monospace", fontWeight: 600, color: T.danger(dark) }}>Total: ({mxn(totalGastosOpExt)})</span>}
+                        {!gastosOpExtBloqueados && <button onClick={() => setGastosOpExt(gs => [...gs, { id: nextId(), nombre: "", valor: "" }])} style={{ padding: "4px 10px", borderRadius: 6, border: `1px solid ${T.border2(dark)}`, background: "transparent", color: T.t1(dark), fontSize: 12, cursor: "pointer", fontWeight: 600 }}>+ Agregar</button>}
                       </div>
                     </div>
-                    {gastosOpExt.length === 0 && <p style={{ fontSize: 12, color: T.t2(dark), textAlign: "center", padding: "8px 0" }}>Sin gastos operativos extra</p>}
-                    <div style={{ ...flex, ...col, gap: 12 }}>
-                      {gastosOpExt.map((g) => (
-                        <div key={g.id} className="commission-row">
-                          <input placeholder="Concepto (ej. Traslado)" value={g.nombre} onChange={e => setGastosOpExt(gs => gs.map(x => x.id === g.id ? { ...x, nombre: e.target.value } : x))} style={{ flex: 2, minWidth: 120, padding: "7px 10px", borderRadius: 7, background: T.cardBg(dark), border: `1px solid ${T.border2(dark)}`, color: T.t0(dark), fontSize: 12 }} />
-                          <div style={{ flex: 1, minWidth: 90, position: "relative" }}>
-                            <input type="number" min={0} placeholder="0" value={g.valor} onChange={e => setGastosOpExt(gs => gs.map(x => x.id === g.id ? { ...x, valor: e.target.value } : x))} style={{ width: "100%", padding: "7px 28px 7px 10px", borderRadius: 7, background: T.cardBg(dark), border: `1px solid ${T.border2(dark)}`, color: T.t0(dark), fontSize: 12, fontFamily: "'JetBrains Mono',monospace" }} />
-                            <span style={{ position: "absolute", right: 8, top: "50%", transform: "translateY(-50%)", fontSize: 11, color: T.t2(dark), pointerEvents: "none" }}>$</span>
-                          </div>
-                          <button onClick={() => setGastosOpExt(gs => gs.filter(x => x.id !== g.id))} style={{ width: 28, height: 28, borderRadius: 6, border: `1px solid ${T.border(dark)}`, background: "transparent", color: T.t2(dark), fontSize: 16, cursor: "pointer", flexShrink: 0, lineHeight: 1 }}>×</button>
-                        </div>
-                      ))}
-                    </div>
+                    {gastosOpExtBloqueados ? (
+                      <p style={{ fontSize: 12, color: T.t2(dark), textAlign: "center", padding: "8px 0" }}>Opción bloqueada para este modelo.</p>
+                    ) : gastosOpExt.length === 0 ? (
+                      <p style={{ fontSize: 12, color: T.t2(dark), textAlign: "center", padding: "8px 0" }}>Sin gastos operativos extra</p>
+                    ) : (
+                      <div style={{ ...flex, ...col, gap: 12 }}>
+                        {gastosOpExt.map((g) => {
+                          const opcionesDisponibles = familiaModelo ? Object.keys(GASTOS_OPERATIVOS_FLOTAS[familiaModelo] || {}).filter(opt => opt !== "INSTALACION DE CAJAS SECAS" || familiaModelo === "NP300") : [];
+                          return (
+                            <div key={g.id} className="commission-row">
+                              <select value={g.nombre} onChange={e => {
+                                const nuevoNombre = e.target.value;
+                                let nuevoValor = g.valor;
+                                if (familiaModelo && GASTOS_OPERATIVOS_FLOTAS[familiaModelo][nuevoNombre] !== undefined) {
+                                  nuevoValor = GASTOS_OPERATIVOS_FLOTAS[familiaModelo][nuevoNombre];
+                                }
+                                setGastosOpExt(gs => gs.map(x => x.id === g.id ? { ...x, nombre: nuevoNombre, valor: nuevoValor } : x));
+                              }} style={{ flex: 2, minWidth: 120, padding: "7px 10px", borderRadius: 7, background: T.cardBg(dark), border: `1px solid ${T.border2(dark)}`, color: T.t0(dark), fontSize: 12 }}>
+                                <option value="">— Seleccionar concepto —</option>
+                                {opcionesDisponibles.map(opt => (
+                                  <option key={opt} value={opt}>{opt}</option>
+                                ))}
+                              </select>
+                              <div style={{ flex: 1, minWidth: 90, position: "relative" }}>
+                                <input type="number" min={0} placeholder="0" value={g.valor} onChange={e => setGastosOpExt(gs => gs.map(x => x.id === g.id ? { ...x, valor: e.target.value } : x))} style={{ width: "100%", padding: "7px 28px 7px 10px", borderRadius: 7, background: T.cardBg(dark), border: `1px solid ${T.border2(dark)}`, color: T.t0(dark), fontSize: 12, fontFamily: "'JetBrains Mono',monospace" }} />
+                                <span style={{ position: "absolute", right: 8, top: "50%", transform: "translateY(-50%)", fontSize: 11, color: T.t2(dark), pointerEvents: "none" }}>$</span>
+                              </div>
+                              <button onClick={() => setGastosOpExt(gs => gs.filter(x => x.id !== g.id))} style={{ width: 28, height: 28, borderRadius: 6, border: `1px solid ${T.border(dark)}`, background: "transparent", color: T.t2(dark), fontSize: 16, cursor: "pointer", flexShrink: 0, lineHeight: 1 }}>×</button>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
                   </div>
 
                   <div style={{ marginBottom: 20, padding: "16px", background: T.inputBg(dark), border: `1px solid ${T.border(dark)}`, borderRadius: 12 }}>
