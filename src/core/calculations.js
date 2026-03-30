@@ -86,17 +86,20 @@ export function getBonificacion(m, categoria) {
   return { incentivo: incFijo, total: incFijo };
 }
 
-export function calcular({ m, num, plazo, bc, precio, categoriaSeleccionada, isanOvr, totalComisiones = 0, totalGastosOpExt = 0, tiie = TIIE_DEFAULT, adic = ADIC_DEFAULT }) {
+export function calcular({ m, num, plazo, bc, precio, categoriaSeleccionada, isanOvr, totalComisiones = 0, totalGastosOpExt = 0, tiie = TIIE_DEFAULT, adic = ADIC_DEFAULT, costoClienteExtra = 0 }) {
   const tasa = tiie + adic;
   const baseParaDescuento = m.especial > 0 ? m.especial : m.lista;
   const desc = baseParaDescuento > 0 ? (baseParaDescuento - precio) / baseParaDescuento : 0;
+
+  const precioAjustado = precio + costoClienteExtra;
+
   const categoria = categoriaSeleccionada;
   const bonif = getBonificacion(m, categoria);
   const cargos = m.cargosTotales;
   const cuotas = m.cuotasTotales;
-  const pSIVA = precio / 1.16;
+  const pSIVA = precioAjustado / 1.16;
 
-  const precioBaseCalculado = precioBaseDesdeFinal(precio, m.tipoISAN);
+  const precioBaseCalculado = precioBaseDesdeFinal(precioAjustado, m.tipoISAN);
   const isanInfoCompleto = calcularISAN(precioBaseCalculado, m.tipoISAN);
 
   const isanCalc = isanOvr !== undefined ? isanOvr : isanInfoCompleto.isanPagable;
@@ -113,7 +116,7 @@ export function calcular({ m, num, plazo, bc, precio, categoriaSeleccionada, isa
   const iva = pSIVA * 0.16;
 
   return {
-    pSIVA, bonif, uB, cargos, cuotas, pp, ec, isan: isanCalc, isanInfo,
+    pSIVA, precioAjustado, costoClienteExtra, bonif, uB, cargos, cuotas, pp, ec, isan: isanCalc, isanInfo,
     totalComisiones, totalGastosOpExt, uopU_bruta, iva,
     uopU, uopT: uopU * num,
     mg: pSIVA > 0 ? uopU / pSIVA : 0,

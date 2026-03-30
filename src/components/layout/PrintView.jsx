@@ -2,12 +2,14 @@ import { useMemo } from "react";
 import { mxn, pct } from "../../utils/formatters";
 import { LogoGTC, LogoNissan } from "../icons/Icons";
 
-export function PrintView({ r, m, safeNum, cliente, modeloSeleccionado, safePlazo, catV, comisiones, gastosOpExt }) {
-  if (!r) return null;
-
+export function PrintView({ r, m, safeNum, cliente, modeloSeleccionado, safePlazo, catV, comisiones, gastosOpExt, costoClienteExtra }) {
   const printTableRows = useMemo(() => {
+    if (!r) return [];
     let rows = [];
     rows.push(["Precio Final c/IVA", mxn(r.pSIVA * 1.16), mxn(r.pSIVA * 1.16 * safeNum), false, false]);
+    if (costoClienteExtra > 0) {
+      rows.push(["Costo Cliente Extra", mxn(costoClienteExtra), mxn(costoClienteExtra * safeNum), false, false]);
+    }
     rows.push(["IVA (16%)", mxn(r.iva), mxn(r.iva * safeNum), false, false]);
     rows.push(["Precio s/IVA", mxn(r.pSIVA), mxn(r.pSIVA * safeNum), false, false]);
     rows.push(["Costo Distribuidor", `(${mxn(m.dist)})`, `(${mxn(m.dist * safeNum)})`, false, false]);
@@ -20,12 +22,18 @@ export function PrintView({ r, m, safeNum, cliente, modeloSeleccionado, safePlaz
       if (m.cargosObj.seg_tras) rows.push(["↳ Seguro Traslado", `(${mxn(m.cargosObj.seg_tras)})`, `(${mxn(m.cargosObj.seg_tras * safeNum)})`, false, true]);
     }
 
-    if (r.totalGastosOpExt > 0) {
+    let hasGastosValidos = false;
+    gastosOpExt.forEach(g => { if ((parseFloat(g.valor) || 0) > 0) hasGastosValidos = true; });
+
+    if (hasGastosValidos) {
       rows.push(["Gastos Operativos Ext.", `(${mxn(r.totalGastosOpExt)})`, `(${mxn(r.totalGastosOpExt * safeNum)})`, false, false]);
       gastosOpExt.forEach(g => {
         const v = parseFloat(g.valor) || 0;
+        const pctCliente = Math.max(0, Math.min(100, parseFloat(g.porcentajeCliente) || 0));
+        const absorbeAgencia = v * (1 - pctCliente / 100);
         if (v > 0) {
-          rows.push([`↳ ${g.nombre || "Sin nombre"}`, `(${mxn(v)})`, `(${mxn(v * safeNum)})`, false, true]);
+          const labelAdicional = pctCliente > 0 ? ` (C: ${pctCliente}%)` : '';
+          rows.push([`↳ ${g.nombre || "Sin nombre"}${labelAdicional}`, `(${mxn(absorbeAgencia)})`, `(${mxn(absorbeAgencia * safeNum)})`, false, true]);
         }
       });
     }
@@ -53,7 +61,9 @@ export function PrintView({ r, m, safeNum, cliente, modeloSeleccionado, safePlaz
     rows.push(["Margen", pct(r.mg), pct(r.mg), true, false]);
 
     return rows;
-  }, [r, m, safeNum, gastosOpExt]);
+  }, [r, m, safeNum, gastosOpExt, costoClienteExtra]);
+
+  if (!r) return null;
 
   return (
     <div className="print-only" style={{ padding: 0 }}>

@@ -34,7 +34,7 @@ export function useCalculator() {
     { id: 1, nombre: "Vendedor", valor: "", modo: "pct" },
   ]);
   const [gastosOpExt, setGastosOpExt] = useState([
-    { id: 1, nombre: "", valor: "" },
+    { id: 1, nombre: "", valor: "", porcentajeCliente: 0 },
   ]);
 
   const nextId = () => Date.now();
@@ -81,10 +81,28 @@ export function useCalculator() {
   const familiaModelo = getFamiliaModelo(modeloSeleccionado);
   const gastosOpExtBloqueados = m ? !familiaModelo : false;
 
+  const { totalGastosOpExtAgencia, costoClienteExtra } = useMemo(() => {
+    return gastosOpExt.reduce((acc, g) => {
+      const v = parseFloat(g.valor) || 0;
+      if (Number.isNaN(v)) return acc;
+
+      const pctCliente = parseFloat(g.porcentajeCliente) || 0;
+      const pctValido = Math.max(0, Math.min(100, pctCliente));
+
+      const absorbeCliente = v * (pctValido / 100);
+      const absorbeAgencia = v - absorbeCliente;
+
+      return {
+        totalGastosOpExtAgencia: acc.totalGastosOpExtAgencia + absorbeAgencia,
+        costoClienteExtra: acc.costoClienteExtra + absorbeCliente
+      };
+    }, { totalGastosOpExtAgencia: 0, costoClienteExtra: 0 });
+  }, [gastosOpExt]);
+
   const rBase = useMemo(() => {
     if (!m || !pF) return null;
-    return calcular({ m, num: safeNum, plazo: safePlazo, bc, precio: precioNegociado, categoriaSeleccionada, isanOvr: iOvr, totalComisiones: 0, totalGastosOpExt: 0, tiie, adic });
-  }, [m, safeNum, safePlazo, bc, pF, precioNegociado, categoriaSeleccionada, iOvr, tiie, adic]);
+    return calcular({ m, num: safeNum, plazo: safePlazo, bc, precio: precioNegociado, categoriaSeleccionada, isanOvr: iOvr, totalComisiones: 0, totalGastosOpExt: 0, tiie, adic, costoClienteExtra });
+  }, [m, safeNum, safePlazo, bc, pF, precioNegociado, categoriaSeleccionada, iOvr, tiie, adic, costoClienteExtra]);
 
   const totalComisiones = useMemo(() => {
     if (!rBase) return 0;
@@ -96,18 +114,10 @@ export function useCalculator() {
     }, 0);
   }, [rBase, comisiones]);
 
-  const totalGastosOpExt = useMemo(() => {
-    return gastosOpExt.reduce((acc, g) => {
-      const v = parseFloat(g.valor) || 0;
-      if (Number.isNaN(v)) return acc;
-      return acc + v;
-    }, 0);
-  }, [gastosOpExt]);
-
   const r = useMemo(() => {
     if (!m || !pF) return null;
-    return calcular({ m, num: safeNum, plazo: safePlazo, bc, precio: precioNegociado, categoriaSeleccionada, isanOvr: iOvr, totalComisiones, totalGastosOpExt, tiie, adic });
-  }, [m, safeNum, safePlazo, bc, pF, precioNegociado, categoriaSeleccionada, iOvr, totalComisiones, totalGastosOpExt, tiie, adic]);
+    return calcular({ m, num: safeNum, plazo: safePlazo, bc, precio: precioNegociado, categoriaSeleccionada, isanOvr: iOvr, totalComisiones, totalGastosOpExt: totalGastosOpExtAgencia, tiie, adic, costoClienteExtra });
+  }, [m, safeNum, safePlazo, bc, pF, precioNegociado, categoriaSeleccionada, iOvr, totalComisiones, totalGastosOpExtAgencia, tiie, adic, costoClienteExtra]);
 
   return {
     state: {
@@ -125,7 +135,7 @@ export function useCalculator() {
     },
     computed: {
       m, pF, esAAA, precioNegociado, descuentoAdicional, safeNum, safePlazo,
-      totalComisiones, totalGastosOpExt, r, descFijo, familiaModelo, gastosOpExtBloqueados
+      totalComisiones, totalGastosOpExt: totalGastosOpExtAgencia, costoClienteExtra, r, descFijo, familiaModelo, gastosOpExtBloqueados
     }
   };
 }

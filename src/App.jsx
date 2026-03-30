@@ -16,7 +16,7 @@ export default function App() {
   const { state, actions, computed } = calc;
   const { dark, loadingDb, modelosData, vigenciaDB, cliente, num, plazo, bc, tiieInput, fechaTiieAplicada, adicInput, modeloSeleccionado, categoriaSeleccionada, precioNegociadoInput, isanOvr, expandCargos, expandGastosOpExt, expandCuotas, comisiones, gastosOpExt } = state;
   const { setDark, setCliente, setNum, setPlazo, setBC, setTiieInput, setAdicInput, setModeloSeleccionado, setCategoriaSeleccionada, setPrecioNegociadoInput, setIsanOvr, setExpandCargos, setExpandGastosOpExt, setExpandCuotas, setComisiones, setGastosOpExt, nextId } = actions;
-  const { m, pF, esAAA, precioNegociado, descuentoAdicional, safeNum, safePlazo, totalComisiones, totalGastosOpExt, r, descFijo, familiaModelo, gastosOpExtBloqueados } = computed;
+  const { m, pF, esAAA, precioNegociado, descuentoAdicional, safeNum, safePlazo, totalComisiones, totalGastosOpExt, costoClienteExtra, r, descFijo, familiaModelo, gastosOpExtBloqueados } = computed;
 
   const catV = r ? r.categoria : "—";
   const ac = r ? (r.mg < 0 ? T.danger(dark) : r.mg <= 0.015 ? T.amber(dark) : T.t0(dark)) : T.t0(dark);
@@ -25,6 +25,9 @@ export default function App() {
   let webTableRows = [];
   if (r) {
     webTableRows.push(["Precio Final c/IVA", mxn(r.pSIVA * 1.16), mxn(r.pSIVA * 1.16 * safeNum)]);
+    if (costoClienteExtra > 0) {
+      webTableRows.push(["Costo Cliente Extra", mxn(costoClienteExtra), mxn(costoClienteExtra * safeNum), false, false, false, null, false, true]);
+    }
     webTableRows.push(["IVA (16%)", mxn(r.iva), mxn(r.iva * safeNum)]);
     webTableRows.push(["Precio s/IVA", mxn(r.pSIVA), mxn(r.pSIVA * safeNum)]);
     webTableRows.push(["Costo Distribuidor", `(${mxn(m.dist)})`, `(${mxn(m.dist * safeNum)})`]);
@@ -218,7 +221,7 @@ export default function App() {
                       <p style={{ fontSize: 11, fontWeight: 700, color: T.t1(dark), textTransform: "uppercase", letterSpacing: ".08em" }}>Gastos Operativos Ext.</p>
                       <div style={{ ...flex, alignItems: "center", gap: 8 }}>
                         {totalGastosOpExt > 0 && !gastosOpExtBloqueados && r && <span className="hide-on-mobile" style={{ fontSize: 11, fontFamily: "'JetBrains Mono',monospace", fontWeight: 600, color: T.danger(dark) }}>Total: ({mxn(totalGastosOpExt)})</span>}
-                        {!gastosOpExtBloqueados && <button onClick={() => setGastosOpExt(gs => [...gs, { id: nextId(), nombre: "", valor: "" }])} style={{ padding: "4px 10px", borderRadius: 6, border: `1px solid ${T.border2(dark)}`, background: "transparent", color: T.t1(dark), fontSize: 12, cursor: "pointer", fontWeight: 600 }}>+ Agregar</button>}
+                        {!gastosOpExtBloqueados && <button onClick={() => setGastosOpExt(gs => [...gs, { id: nextId(), nombre: "", valor: "", porcentajeCliente: 0 }])} style={{ padding: "4px 10px", borderRadius: 6, border: `1px solid ${T.border2(dark)}`, background: "transparent", color: T.t1(dark), fontSize: 12, cursor: "pointer", fontWeight: 600 }}>+ Agregar</button>}
                       </div>
                     </div>
                     {gastosOpExtBloqueados ? (
@@ -230,11 +233,13 @@ export default function App() {
                         {gastosOpExt.map((g) => {
                           const opcionesDisponibles = familiaModelo ? Object.keys(GASTOS_OPERATIVOS_FLOTAS[familiaModelo] || {}).filter(opt => opt !== "INSTALACION DE CAJAS SECAS" || familiaModelo === "NP300") : [];
                           return (
-                            <div key={g.id} className="commission-row">
+                            <div key={g.id} className="commission-row" style={{ flexWrap: "wrap", gap: 10 }}>
                               <select value={g.nombre} onChange={e => {
                                 const nuevoNombre = e.target.value;
                                 let nuevoValor = g.valor;
-                                if (familiaModelo && GASTOS_OPERATIVOS_FLOTAS[familiaModelo][nuevoNombre] !== undefined) {
+                                if (nuevoNombre === "") {
+                                  nuevoValor = "";
+                                } else if (familiaModelo && GASTOS_OPERATIVOS_FLOTAS[familiaModelo][nuevoNombre] !== undefined) {
                                   nuevoValor = GASTOS_OPERATIVOS_FLOTAS[familiaModelo][nuevoNombre];
                                 }
                                 setGastosOpExt(gs => gs.map(x => x.id === g.id ? { ...x, nombre: nuevoNombre, valor: nuevoValor } : x));
@@ -244,9 +249,13 @@ export default function App() {
                                   <option key={opt} value={opt}>{opt}</option>
                                 ))}
                               </select>
-                              <div style={{ flex: 1, minWidth: 90, position: "relative" }}>
+                              <div style={{ flex: 1, minWidth: 90, position: "relative" }} title="Costo">
                                 <input type="number" readOnly placeholder="0" value={g.valor} style={{ width: "100%", padding: "7px 28px 7px 10px", borderRadius: 7, background: T.cardBg(dark), border: `1px solid ${T.border2(dark)}`, color: T.t0(dark), fontSize: 12, fontFamily: "'JetBrains Mono',monospace", cursor: "not-allowed", opacity: 0.8 }} />
                                 <span style={{ position: "absolute", right: 8, top: "50%", transform: "translateY(-50%)", fontSize: 11, color: T.t2(dark), pointerEvents: "none" }}>$</span>
+                              </div>
+                              <div style={{ width: 80, position: "relative" }} title="Absorbe Cliente (%)">
+                                <input type="number" placeholder="0" min="0" max="100" value={g.porcentajeCliente !== undefined ? g.porcentajeCliente : ""} onChange={e => setGastosOpExt(gs => gs.map(x => x.id === g.id ? { ...x, porcentajeCliente: e.target.value } : x))} style={{ width: "100%", padding: "7px 20px 7px 8px", borderRadius: 7, background: T.inputBg(dark), border: `1px solid ${T.border2(dark)}`, color: T.t0(dark), fontSize: 12, fontFamily: "'JetBrains Mono',monospace" }} />
+                                <span style={{ position: "absolute", right: 8, top: "50%", transform: "translateY(-50%)", fontSize: 11, color: T.t2(dark), pointerEvents: "none", fontWeight: 700 }}>%</span>
                               </div>
                               <button onClick={() => setGastosOpExt(gs => gs.filter(x => x.id !== g.id))} style={{ width: 28, height: 28, borderRadius: 6, border: `1px solid ${T.border(dark)}`, background: "transparent", color: T.t2(dark), fontSize: 16, cursor: "pointer", flexShrink: 0, lineHeight: 1 }}>×</button>
                             </div>
@@ -479,6 +488,7 @@ export default function App() {
         catV={catV}
         comisiones={comisiones}
         gastosOpExt={gastosOpExt}
+        costoClienteExtra={costoClienteExtra}
       />
     </>
   );
