@@ -1,9 +1,10 @@
 import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
 export default defineConfig({
+  plugins: [react()],
   server: {
-    allowedHosts: [
-      'computation-bags-stripes-compaq.trycloudflare.com'
-    ]
+    // Esto permite cualquier host en el servidor de desarrollo
+    allowedHosts: true 
   }
 })
