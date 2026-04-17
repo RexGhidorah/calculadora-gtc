@@ -161,8 +161,8 @@ export function getFamiliaModelo(modelo) {
   if (m.startsWith("KICKS")) return "KICKS";
   if (m.startsWith("URVAN")) return "URVAN";
   if (m.startsWith("FRONTIER")) return "FRONTIER";
-  if (m.startsWith("XTRAIL") return "XTRAIL";
-  if (m.startsWith("MAGNITE") return "MAGNITE";
+  if (m.startsWith("XTRAIL")) return "XTRAIL";
+  if (m.startsWith("MAGNITE")) return "MAGNITE";
   if (m.startsWith("NP300") || m.startsWith("NP 300")) return "NP300";
   if (m.startsWith("V-DRIVE") || m.startsWith("V DRIVE")) return "V-DRIVE";
 
